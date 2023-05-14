@@ -10,8 +10,10 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
+#1085006289375-74iiqm8f1rd3pibl5rahedhinfv2i6k7.apps.googleusercontent.com
+
 dag = DAG(
-    'airflow_monitoring',
+    'globant_tech_challeng_elt',
     default_args=default_args,
     description='liveness monitoring dag',
     schedule_interval='*/10 * * * *',
@@ -21,10 +23,12 @@ dag = DAG(
 )
 
 # priority_weight has type int in Airflow DB, uses the maximum.
-t1 = BashOperator(
-    task_id='echo',
+move_file_to_storage_layer = BashOperator(
+    task_id='move_file_to_storage_layer_task',
     bash_command='echo test',
     dag=dag,
     depends_on_past=False,
     priority_weight=2**31 - 1,
     do_xcom_push=False)
+
+move_file_to_storage_layer
